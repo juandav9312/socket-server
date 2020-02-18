@@ -1,8 +1,44 @@
 import {Router, Response, Request} from 'express';
 import Server from '../clases/server';
+import { usuariosConectados } from '../sockets/sockets';
 
 const router = Router();
 const server = Server.instance;
+
+//obtenerusuarios
+router.get('/usuarios', (req: Request, res: Response) => {
+
+    server.io.clients( (err: any, clientes: string[]) => {
+        if(err){
+            return res.json({
+                ok: false,
+                err
+            })
+        }
+
+        return res.json({
+            ok: true,
+            clientes
+        })
+
+    })
+
+});
+
+
+//obtener usuario detalle
+router.get('/detalle', (req: Request, res: Response) => {
+
+
+        return res.json({
+            ok: true,
+            clientes: usuariosConectados.getLista()
+        })
+
+    
+
+});
+
 
 router.get('/mensajes', (req: Request, res: Response) => {
     res.json({
